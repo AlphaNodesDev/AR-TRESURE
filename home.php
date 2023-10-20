@@ -4,19 +4,7 @@
 include("./functions/db/database.php");
 include("./functions/check/login-check.php");?>
 <body>
-    <?php if(isset($_GET["error"])){
-        echo "".$_GET["error"]."";
-    }else if(isset($_GET["success"])){
 
-        echo "".$_GET["success"]."";
-    }else if(isset($_GET["message"])){
-
-        echo "".$_GET["message"]."";
-    }
-
-
-
-    ?>
         <div class="top-nav">
         <span>Welcome, <?php echo $username; ?></span>
         <a href="./functions/handlers/logout.php">Logout</a>
@@ -24,6 +12,19 @@ include("./functions/check/login-check.php");?>
     <div class="sidebar">
 
     </div>
+    <?php if(isset($_GET['error'])) { echo '<div id="alert-box" class="alert">
+    <span class="closebtn"  onclick="clearMessageQueryParam()">&times;</span>
+    <div id="alert-text">'.$_GET['error'].'</div></div>'; }
+     else if(isset($_GET['success'])) { echo '<div id="alert-box" class="alert">
+        <span class="closebtn" onclick="clearMessageQueryParam()">&times;</span>
+        <div id="alert-text">'.$_GET['success'].'</div></div>'; }
+      else if(isset($_GET['message'])) { echo '<div id="alert-box" class="alert">
+        <span class="closebtn"  onclick="clearMessageQueryParam()">&times;</span>
+        <div id="alert-text">'.$_GET['message'].'</div></div>'; } ?>
+
+    
+
+
 <div class="card">
       <div class="card-header">
         <h2>Questions</h2>
@@ -51,11 +52,12 @@ include("./functions/check/login-check.php");?>
         </ul>
       </div>
       <div class="card-footer">
-        <button id="submit" class="btn">Submit</button>
+        <button id="submit" class="btn">Scan Qr</button>
       </div>
     </div>
 
 
 
 </body>
+<script src="./assets/js/script.js"></script>
 </html>
