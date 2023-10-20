@@ -11,11 +11,11 @@ include("./functions/db/database.php");?>
     }
     
     ?>
-<form method="POST" action="./functions/handlers/register-process.php">
+<form method="POST" action="./functions/handlers/login-process.php">
 <input name="username">
 <input name="email">
 <input name="password">
-<button type="submit" name="register">REGISTER</button>
+<button type="submit" name="login">REGISTER</button>
 </form>
 </body>
 </html>
