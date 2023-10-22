@@ -3,26 +3,25 @@
 <?php include("./conponents/head-home.php");
 include("./functions/db/database.php");
 include("./functions/check/login-check.php");?>
-<body>
+
+<body onload="countdown()">
 
         <div class="top-nav">
         <span>Welcome, <?php echo $username; ?></span>
         <a href="./functions/handlers/logout.php">Logout</a>
     </div>
     <div class="sidebar">
-
     </div>
-    <?php if(isset($_GET['error'])) { echo '<div id="alert-box" class="alert">
-    <span class="closebtn"  onclick="clearMessageQueryParam()">&times;</span>
-    <div id="alert-text">'.$_GET['error'].'</div></div>'; }
-     else if(isset($_GET['success'])) { echo '<div id="alert-box" class="alert">
-        <span class="closebtn" onclick="clearMessageQueryParam()">&times;</span>
-        <div id="alert-text">'.$_GET['success'].'</div></div>'; }
-      else if(isset($_GET['message'])) { echo '<div id="alert-box" class="alert">
-        <span class="closebtn"  onclick="clearMessageQueryParam()">&times;</span>
-        <div id="alert-text">'.$_GET['message'].'</div></div>'; } ?>
+    <?php
+if (isset($_GET['message'])) {
+    echo '<div id="alert-box" class="alert">
+        <span class="closebtn" onclick="removeAlert()"><span class="timer" id="timer">15</span>&times;</span>
+        <div id="alert-text">' . $_GET['message'] . '</div>
+    </div>';
+}
+?>
 
-    
+
 
 
 <div class="card">
@@ -59,5 +58,36 @@ include("./functions/check/login-check.php");?>
 
 
 </body>
-<script src="./assets/js/script.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the current URL
+    var currentUrl = window.location.href;
+
+    // Check if the URL contains "home.php?message="
+    if (currentUrl.indexOf("home.php?message=") !== -1) {
+      function removeAlert() {
+        var alertBox = document.getElementById('alert-box');
+        if (alertBox) {
+          alertBox.style.display = 'none';
+          window.history.replaceState({}, document.title, 'home.php');
+        }
+      }
+
+      function countdown() {
+        var timer = document.getElementById('timer');
+        var count = parseInt(timer.innerText);
+        if (count > 0) {
+          count--;
+          timer.innerText = count;
+          setTimeout(countdown, 1000);
+        } else {
+          removeAlert();
+        }
+      }
+
+      countdown();
+    }
+  });
+</script>
+
 </html>

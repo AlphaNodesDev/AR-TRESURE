@@ -11,7 +11,7 @@ if (isset($_POST["login"])) {
         $_SESSION["username"] = $username;
         $_SESSION["email"] = $email;
         $_SESSION["password"] = $password;
-        header("Location: ../../home.php?message=Account Created Successfully");
+        header("Location: ../../home.php?message=Login Successfull");
         exit();
     } else {
         header("Location: ../../index.php?error=login failed");       
