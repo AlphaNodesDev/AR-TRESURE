@@ -37,12 +37,13 @@ $query2 = "SELECT * FROM game WHERE username = '$username'";
 
 $result2 = mysqli_query($conn, $query2);
 
-$query = "SELECT question FROM qa ORDER BY RAND() LIMIT 1";
+$query = "SELECT * FROM qa ORDER BY RAND() LIMIT 1";
 $result = mysqli_query($conn, $query);
 if ($result) {
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $question = $row['question'];
+        $question_id = $row['id'];
         echo '<h2 id="question" class="card-title">' . $question . '</h2>';
     } else {
         echo '<h2 id="question" class="card-title">No questions available.</h2>';
@@ -55,7 +56,7 @@ if ($result) {
         
       </div>
       <div class="card-footer">
-        <button id="submit" class="btn">Scan Qr</button>
+        <button onclick="window.location.href=('/functions/handlers/scan_qr.php?question_id=<?php echo $question_id?>')" class="btn">Scan Qr</button>
       </div>
     </div>
 

@@ -17,7 +17,6 @@ include("./functions/check/session-check.php");
         check
         </span>'.$_GET["success"].'';
     }
-    
     ?>
     </a>
   <h1>register</h1> 
