@@ -30,8 +30,38 @@ if (isset($_GET['message'])) {
       </div>
       <hr />
       <div class="card-body">
-        <h2 id="question" class="card-title">Question</h2>
-        <ul>
+      <?php
+
+
+$query2 = "SELECT * FROM game WHERE username = '$username'";
+
+$result2 = mysqli_query($conn, $query2);
+
+$query = "SELECT question FROM qa ORDER BY RAND() LIMIT 1";
+$result = mysqli_query($conn, $query);
+if ($result) {
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $question = $row['question'];
+        echo '<h2 id="question" class="card-title">' . $question . '</h2>';
+    } else {
+        echo '<h2 id="question" class="card-title">No questions available.</h2>';
+    }
+    mysqli_free_result($result);
+} else {
+    echo '<h2 id="question" class="card-title">Database error: ' . mysqli_error($conn) . '</h2>';
+}
+?>
+        
+      </div>
+      <div class="card-footer">
+        <button id="submit" class="btn">Scan Qr</button>
+      </div>
+    </div>
+
+
+
+    <!---<ul>
           <li>
             <input type="radio" id="a" name="answer" class="answer" />
             <label for="a" id="aText">Question</label>
@@ -49,12 +79,8 @@ if (isset($_GET['message'])) {
             <label for="d" id="dText">Question</label>
           </li>
         </ul>
-      </div>
-      <div class="card-footer">
-        <button id="submit" class="btn">Scan Qr</button>
-      </div>
-    </div>
 
+-->
 
 
 </body>

@@ -1,6 +1,5 @@
 <?php
 include("../db/database.php");
-
 if (isset($_POST["register"])) {
     $username = $conn->real_escape_string($_POST["username"]);
     $email = $conn->real_escape_string($_POST["email"]); 
