@@ -101,17 +101,20 @@ hr {
 
 /* Styles for the alert box */
 .alert {
-    background-color: #1bc060;
+    background-color: #00d81d;
     color: white;
     text-align: center;
     padding: 10px;
     position: fixed;
-    top: 0;
+    top: 5%;
+    border-radius: 12px;
     left: 50%;
     transform: translateX(-50%);
     width: 70%;
     z-index: 100;
 }
+
+
 
 .closebtn {
     position: absolute;

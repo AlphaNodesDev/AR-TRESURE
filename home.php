@@ -3,7 +3,37 @@
 <?php include("./conponents/head-home.php");
 include("./functions/db/database.php");
 include("./functions/check/login-check.php");?>
+<style>
+  /* Styles for the alert box */
+.alert2 {
+    background-color: #df0000;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    border-radius: 12px;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    z-index: 100;
+}
+/* Styles for the alert box */
+.alert {
+    background-color: #00d81d;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    top: 5%;
+    border-radius: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    z-index: 100;
+}
 
+  </style>
 <body onload="countdown()">
 
         <div class="top-nav">
@@ -15,17 +45,23 @@ include("./functions/check/login-check.php");?>
     <?php
 if (isset($_GET['message'])) {
     echo '<div id="alert-box" class="alert">
-        <span class="closebtn" onclick="removeAlert()"><span class="timer" id="timer">15</span>&times;</span>
-        <div id="alert-text">' . $_GET['message'] . '</div>
+    <span class="timer" id="timer">15</span>
+    <div id="alert-text">' . $_GET['message'] . '</div>
     </div>';
+}else if (isset($_GET['error'])) {
+  echo '<div id="alert-box" class="alert2">
+ <span class="timer" id="timer">15</span>
+  <div id="alert-text">' . $_GET['error'] . '</div>
+  </div>';
 }
 ?>
 
 
 
 
+
 <div class="card">
-      <div class="card-header">
+      <div class="card-header" >
         <h2>Questions</h2>
       </div>
       <hr />
@@ -56,7 +92,7 @@ if ($result) {
         
       </div>
       <div class="card-footer">
-        <button onclick="window.location.href=('/functions/handlers/scan_qr.php?question_id=<?php echo $question_id?>')" class="btn">Scan Qr</button>
+        <button onclick="window.location.href=('./functions/handlers/scan_qr.php?question_id=<?php echo $question_id?>')" class="btn">Scan Qr</button>
       </div>
     </div>
 
@@ -86,6 +122,11 @@ if ($result) {
 
 </body>
 <script>
+  function removeAlert_btn(){
+    
+  alertBox.style.display = 'none';
+          window.history.replaceState({}, document.title, 'home.php');
+}
   document.addEventListener("DOMContentLoaded", function() {
     // Get the current URL
     var currentUrl = window.location.href;
@@ -114,6 +155,54 @@ if ($result) {
 
       countdown();
     }
+   else if (currentUrl.indexOf("home.php?error=") !== -1) {
+      function removeAlert() {
+        var alertBox = document.getElementById('alert-box');
+        if (alertBox) {
+          alertBox.style.display = 'none';
+          window.history.replaceState({}, document.title, 'home.php');
+        }
+      }
+
+      function countdown() {
+        var timer = document.getElementById('timer');
+        var count = parseInt(timer.innerText);
+        if (count > 0) {
+          count--;
+          timer.innerText = count;
+          setTimeout(countdown, 1000);
+        } else {
+          removeAlert();
+        }
+      }
+
+      countdown();
+    }
+    else if (currentUrl.indexOf("home.php?success=") !== -1) {
+      function removeAlert() {
+        var alertBox = document.getElementById('alert-box');
+        if (alertBox) {
+          alertBox.style.display = 'none';
+          window.history.replaceState({}, document.title, 'home.php');
+        }
+      }
+
+      function countdown() {
+        var timer = document.getElementById('timer');
+        var count = parseInt(timer.innerText);
+        if (count > 0) {
+          count--;
+          timer.innerText = count;
+          setTimeout(countdown, 1000);
+        } else {
+          removeAlert();
+        }
+      }
+
+      countdown();
+    }
+
+
   });
 </script>
 

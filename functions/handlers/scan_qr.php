@@ -1,21 +1,11 @@
 
+
 <?php if(isset($_GET['question_id'])){
 
-
-$question_id = $_GET['question_id'];
-
-}
-
-if(isset($_POST['qr_code']))
-{
- $qr_code = $_POST['qr_code'];
-
-
- if($qr_code == $question_id){
-    alert("that's correct answer");
- }
+    $question_id = $_GET['question_id'];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,9 +31,11 @@ if(isset($_POST['qr_code']))
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-
+            var questionId = <?php echo json_encode($question_id); ?>;
             scanner.addListener('scan', function (content) {
-                alert('Scanned: ' + content);
+                var url = '../check/qr_check.php?qr_code=' + encodeURIComponent(content) + '&&question_id=' + questionId;
+
+                window.location.href = url;
             });
 
             Instascan.Camera.getCameras().then(function (cameras) {
