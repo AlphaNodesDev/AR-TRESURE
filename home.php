@@ -67,35 +67,79 @@ if (isset($_GET['message'])) {
       <hr />
       <div class="card-body">
       <?php
+$sql = "SELECT * FROM users WHERE username = '$username'";
+$result = mysqli_query($conn, $sql);
 
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $current_qa = $row['current_qa'];
+    $elapsed_time = $row['elapsed_time'];
+}
 
-$query2 = "SELECT * FROM game WHERE username = '$username'";
+// Check if there is a corresponding QA record
+$sql = "SELECT * FROM game WHERE qa_id = $current_qa AND username = '$username'";
+$result = mysqli_query($conn, $sql);
 
-$result2 = mysqli_query($conn, $query2);
+if (mysqli_num_rows($result) == 0) {
+    // If no corresponding QA record exists, select the QA data by current_qa
+    $qa_sql = "SELECT * FROM qa WHERE id = $current_qa";
+    $qa_result = mysqli_query($conn, $qa_sql);
 
-$query = "SELECT * FROM qa ORDER BY RAND() LIMIT 1";
-$result = mysqli_query($conn, $query);
-if ($result) {
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $question = $row['question'];
-        $question_id = $row['id'];
-        echo '<h2 id="question" class="card-title">' . $question . '</h2>';
-    } else {
-        echo '<h2 id="question" class="card-title">No questions available.</h2>';
+    if (mysqli_num_rows($qa_result) > 0) {
+        $qa_row = mysqli_fetch_assoc($qa_result);
+        $question = $qa_row['question'];
+        $question_id = $qa_row['id'];
+
     }
-    mysqli_free_result($result);
-} else {
-    echo '<h2 id="question" class="card-title">Database error: ' . mysqli_error($conn) . '</h2>';
+}else if (mysqli_num_rows($result) != 0) {
+
+$random_qa_sql = "SELECT * FROM qa WHERE id NOT IN (SELECT qa_id FROM game WHERE username = '$username') ORDER BY RAND() LIMIT 1";
+$random_qa_result = mysqli_query($conn, $random_qa_sql);
+
+if (mysqli_num_rows($random_qa_result) > 0) {
+    $random_qa_row = mysqli_fetch_assoc($random_qa_result);
+    $random_question_id = $random_qa_row['id'];
+
+    // Update current_qa with the randomly selected question_id
+    $update_sql = "UPDATE users SET current_qa = $random_question_id WHERE username = '$username'";
+    mysqli_query($conn, $update_sql);
+      // If no corresponding QA record exists, select the QA data by current_qa
+      $qa_sql = "SELECT * FROM qa WHERE id = $random_question_id";
+      $qa_result = mysqli_query($conn, $qa_sql);
+  
+      if (mysqli_num_rows($qa_result) > 0) {
+          $qa_row = mysqli_fetch_assoc($qa_result);
+          $question = $qa_row['question'];
+          $question_id = $qa_row['id'];
+
+}
+}
+else {
+  if($elapsed_time == NULL){
+    $current_datetime = date("Y-m-d H:i:s");
+    $update_sql_time = "UPDATE users SET elapsed_time = '$current_datetime' WHERE username = '$username'";
+    mysqli_query($conn, $update_sql_time);
+  }
+  $update_sql = "UPDATE users SET game_status = '1' WHERE username = '$username'";
+  $update_status = mysqli_query($conn, $update_sql);
+  if($update_status = TRUE){
+    echo "<script>window.location.href = './result.php';</script>";
+  }
+  
+}
 }
 ?>
+
+
+<h2 id="question" class="card-title"><?php echo $question; ?></h2>
+
+
         
       </div>
       <div class="card-footer">
         <button onclick="window.location.href=('./functions/handlers/scan_qr.php?question_id=<?php echo $question_id?>')" class="btn">Scan Qr</button>
       </div>
     </div>
-
 
 
     <!---<ul>
