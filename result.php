@@ -3,14 +3,15 @@
 <?php include("./conponents/head-home.php");
 include("./functions/db/database.php");
 include("./functions/check/login-check.php");
-
 $sql = "SELECT winner_name FROM winner";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
-$row = mysqli_fetch_assoc($result);
-$winner_name = $row['winner_name'];
+    $row = mysqli_fetch_assoc($result);
+    $winner_name = $row['winner_name'];
 }
+
+echo json_encode(['winner_name' => $winner_name]);
 ?>
 <head>
   <meta charset="UTF-8">
@@ -19,7 +20,6 @@ $winner_name = $row['winner_name'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">,
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-
 
 
 <style>
@@ -1666,6 +1666,8 @@ span:nth-child(17) {
   </filter>
 </svg>
 </div>
+
+
 <?php
 
 if (mysqli_num_rows($result) > 0) {
@@ -1681,6 +1683,32 @@ if (mysqli_num_rows($result) > 0) {
     </script>';
 }
 ?>
+<script>
+  function updateWinnerName() {
+    // Send an AJAX request to a PHP file that fetches the winner's name
+    // Replace 'getWinnerName.php' with the actual PHP script to fetch the winner's name
+    $.ajax({
+        url: './functions/check/getWinnerName.php',
+        method: 'GET',
+        success: function (data) {
+            if (data && data.winner_name) {
+                // Update the winner's name on the page
+                document.getElementById("winner_name").innerHTML = data.winner_name;
+                document.getElementById("winner_result_out").style.display = "block";
+                document.getElementById("winner_result_waiting").style.display = "none";
+            } else {
+                // Handle the case where there's no winner name
+                document.getElementById("winner_result_out").style.display = "none";
+                document.getElementById("winner_result_waiting").style.display = "block";
+            }
+        }
+    });
+}
+
+// Update the winner name every 4 seconds (4000 milliseconds)
+setInterval(updateWinnerName, 4000);
+
+  </script>
 
 
 </body>

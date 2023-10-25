@@ -78,9 +78,7 @@ if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     $current_qa = $row['current_qa'];
     $elapsed_time = $row['elapsed_time'];
-    $game_status = $row['game_status'];
 }
-if($game_status != "1"){
 if($current_qa != NULL) {
 $sql = "SELECT * FROM game WHERE qa_id = $current_qa AND username = '$username'";
 $result = mysqli_query($conn, $sql);
@@ -117,10 +115,6 @@ if (mysqli_num_rows($random_qa_result) > 0) {
 }
 }
 elseif($elapsed_time == NULL){
-
-  $random_qa_sql = "SELECT * FROM qa WHERE id NOT IN (SELECT qa_id FROM game WHERE username = '$username') ORDER BY RAND() LIMIT 1";
-  $random_qa_result = mysqli_query($conn, $random_qa_sql);
-  if (mysqli_num_rows($random_qa_result) == 0) {
     $current_datetime = date("Y-m-d H:i:s");
     $update_sql_time = "UPDATE users SET elapsed_time = '$current_datetime' WHERE username = '$username'";
     mysqli_query($conn, $update_sql_time);
@@ -130,30 +124,7 @@ elseif($elapsed_time == NULL){
   if($update_status = TRUE){
     echo "<script>window.location.href = './result.php';</script>";
   }
-}
-{
-
-
-  $random_qa_sql = "SELECT * FROM qa WHERE id NOT IN (SELECT qa_id FROM game WHERE username = '$username') ORDER BY RAND() LIMIT 1";
-  $random_qa_result = mysqli_query($conn, $random_qa_sql);
   
-  if (mysqli_num_rows($random_qa_result) > 0) {
-      $random_qa_row = mysqli_fetch_assoc($random_qa_result);
-      $random_question_id = $random_qa_row['id'];
-  
-      $update_sql = "UPDATE users SET current_qa = $random_question_id WHERE username = '$username'";
-      mysqli_query($conn, $update_sql);
-        $qa_sql = "SELECT * FROM qa WHERE id = $random_question_id";
-        $qa_result = mysqli_query($conn, $qa_sql);
-    
-        if (mysqli_num_rows($qa_result) > 0) {
-            $qa_row = mysqli_fetch_assoc($qa_result);
-            $question = $qa_row['question'];
-            $question_id = $qa_row['id'];
-  
-        }
-  }
-  }
 }
 
 
@@ -180,9 +151,6 @@ elseif($elapsed_time == NULL){
         }
   }
   }
-}else{
-  echo "<script>window.location.href = './result.php';</script>";
-}
 ?>
 
 
