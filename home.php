@@ -4,7 +4,6 @@
 include("./functions/db/database.php");
 include("./functions/check/login-check.php");?>
 <style>
-  /* Styles for the alert box */
 .alert2 {
     background-color: #df0000;
     color: white;
@@ -18,7 +17,6 @@ include("./functions/check/login-check.php");?>
     width: 70%;
     z-index: 100;
 }
-/* Styles for the alert box */
 .alert {
     background-color: #00d81d;
     color: white;
@@ -36,10 +34,16 @@ include("./functions/check/login-check.php");?>
   </style>
 <body onload="countdown()">
 
-        <div class="top-nav">
-        <span>Welcome, <?php echo $username; ?></span>
-        <a href="./functions/handlers/logout.php">Logout</a>
+<div class="top-nav">
+    <div class="profile-image-container">
+        <img src="./assets/img/91aMDkutHvL.jpg" alt="Profile Image" width="30px" height="30px">
     </div>
+    <span>Welcome, <?php echo $username; ?></span>
+    <a href="./functions/handlers/logout.php" class="logout-button">Logout</a>
+</div>
+
+
+
     <div class="sidebar">
     </div>
     <?php
@@ -75,13 +79,11 @@ if (mysqli_num_rows($result) > 0) {
     $current_qa = $row['current_qa'];
     $elapsed_time = $row['elapsed_time'];
 }
-
-// Check if there is a corresponding QA record
+if($current_qa != NULL) {
 $sql = "SELECT * FROM game WHERE qa_id = $current_qa AND username = '$username'";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) == 0) {
-    // If no corresponding QA record exists, select the QA data by current_qa
     $qa_sql = "SELECT * FROM qa WHERE id = $current_qa";
     $qa_result = mysqli_query($conn, $qa_sql);
 
@@ -100,10 +102,8 @@ if (mysqli_num_rows($random_qa_result) > 0) {
     $random_qa_row = mysqli_fetch_assoc($random_qa_result);
     $random_question_id = $random_qa_row['id'];
 
-    // Update current_qa with the randomly selected question_id
     $update_sql = "UPDATE users SET current_qa = $random_question_id WHERE username = '$username'";
     mysqli_query($conn, $update_sql);
-      // If no corresponding QA record exists, select the QA data by current_qa
       $qa_sql = "SELECT * FROM qa WHERE id = $random_question_id";
       $qa_result = mysqli_query($conn, $qa_sql);
   
@@ -114,8 +114,7 @@ if (mysqli_num_rows($random_qa_result) > 0) {
 
 }
 }
-else {
-  if($elapsed_time == NULL){
+else{
     $current_datetime = date("Y-m-d H:i:s");
     $update_sql_time = "UPDATE users SET elapsed_time = '$current_datetime' WHERE username = '$username'";
     mysqli_query($conn, $update_sql_time);
@@ -126,8 +125,32 @@ else {
     echo "<script>window.location.href = './result.php';</script>";
   }
   
+
 }
-}
+
+}else{
+
+
+  $random_qa_sql = "SELECT * FROM qa WHERE id NOT IN (SELECT qa_id FROM game WHERE username = '$username') ORDER BY RAND() LIMIT 1";
+  $random_qa_result = mysqli_query($conn, $random_qa_sql);
+  
+  if (mysqli_num_rows($random_qa_result) > 0) {
+      $random_qa_row = mysqli_fetch_assoc($random_qa_result);
+      $random_question_id = $random_qa_row['id'];
+  
+      $update_sql = "UPDATE users SET current_qa = $random_question_id WHERE username = '$username'";
+      mysqli_query($conn, $update_sql);
+        $qa_sql = "SELECT * FROM qa WHERE id = $random_question_id";
+        $qa_result = mysqli_query($conn, $qa_sql);
+    
+        if (mysqli_num_rows($qa_result) > 0) {
+            $qa_row = mysqli_fetch_assoc($qa_result);
+            $question = $qa_row['question'];
+            $question_id = $qa_row['id'];
+  
+        }
+  }
+  }
 ?>
 
 
@@ -139,6 +162,11 @@ else {
       <div class="card-footer">
         <button onclick="window.location.href=('./functions/handlers/scan_qr.php?question_id=<?php echo $question_id?>')" class="btn">Scan Qr</button>
       </div>
+      <footer>
+  <div class="footer">
+  Powered by <a href="./aboutus.php" class="a">AlphaNodesDev 😍 😍 😍 </a>
+  </div>
+  </footer>
     </div>
 
 
@@ -172,10 +200,8 @@ else {
           window.history.replaceState({}, document.title, 'home.php');
 }
   document.addEventListener("DOMContentLoaded", function() {
-    // Get the current URL
     var currentUrl = window.location.href;
 
-    // Check if the URL contains "home.php?message="
     if (currentUrl.indexOf("home.php?message=") !== -1) {
       function removeAlert() {
         var alertBox = document.getElementById('alert-box');

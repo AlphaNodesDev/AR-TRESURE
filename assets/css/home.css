@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     font-family: 'poppins', sans-serif;
+    user-select: none;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(137, 43, 226, 0.646);
+    background-color: rgb(209 137 0 / 94%);
 }
 
 .card {
@@ -23,10 +24,6 @@ body {
     position: relative;
 }
 
-.card-header {
-    margin: 10px;
-    color: blueviolet;
-}
 
 hr {
     width: 75%;
@@ -60,7 +57,7 @@ hr {
     padding: 13px;
     width: 100%;
     border: none;
-    background-color: blueviolet;
+    background-color:  blueviolet;
     color: white;
     font-size: 18px;
     border-bottom-left-radius: 7px;
@@ -72,16 +69,44 @@ hr {
     cursor: pointer;
 
 }
+/* Style for the "Logout" button */
+.logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FF5733; /* Change to your preferred button color */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+
+}
+
+.logout-button:hover {
+    background-color: #FF8347; /* Change to a different color on hover */
+    transform: scale(1.05); /* Add a subtle scaling effect on hover */
+    text-decoration: none;
+}
 
 .top-nav {
     background-color: #333;
     color: #fff;
-    padding: 10px;
+    padding: 20px;
     text-align: right;
     position: fixed;
-    top: 0; 
-    width: 100%; 
-    z-index: 100; 
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+.top-nav {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image-container {
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px; /* Adjust the margin as needed */
 }
 
 .top-nav a {
@@ -127,5 +152,28 @@ hr {
 .alert.show {
     display: block;
 }
+
+.footer{
+ 
+    position: fixed;
+    background-color: #191919;
+    width: 85%;
+    bottom: 0;
+    z-index: 9999;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    user-select: none;
+    
+    
+    
+  }
+  .footer .a{
+    text-decoration: none;
+    color: #00d81d;
+  }
 
 

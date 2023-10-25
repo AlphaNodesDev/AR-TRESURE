@@ -27,6 +27,11 @@ include("./functions/check/session-check.php");
   <a class="create_account" href="./register.php">Create An Account</a>
 </form>
 
-
+<footer>
+  <div class="footer">
+  Powered by <a href="./aboutus.php">AlphaNodesDev 😍 😍 😍 </a>
+  </div>
+  </footer>
 </body>
+
 </html>

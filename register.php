@@ -26,7 +26,11 @@ include("./functions/check/session-check.php");
   <button type="submit" class="button" name="register">register</button>
   <a href="./index.php" class="create_account">Already Have An Account</a>
 </form>
-
+<footer>
+  <div class="footer">
+  Powered by <a href="./aboutus.php">AlphaNodesDev 😍 😍 😍 </a>
+  </div>
+  </footer>
 
 <div class="lines">
                 <div class="line"></div>

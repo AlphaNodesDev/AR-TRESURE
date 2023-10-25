@@ -1,5 +1,5 @@
 <?php
-include("../../conponents/head-home.php"); // Correct the file name
+include("../../conponents/head-home.php"); 
 include("../db/database.php");
 include("../check/login-check.php");
 
